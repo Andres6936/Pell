@@ -1,7 +1,3 @@
-#### [v2 working branch](https://github.com/jaredreich/pell/tree/v2) and [v2 project board](https://github.com/jaredreich/pell/projects/1)
-
----
-
 <img src="./images/logo.png" width="128" alt="Logo">
 
 [![npm](https://img.shields.io/npm/v/pell.svg)](https://www.npmjs.com/package/pell)
@@ -111,7 +107,7 @@ npm install --save pell
 // ES6
 import pell from 'pell'
 // or
-import { exec, init } from 'pell'
+import {Pell} from 'pell'
 ```
 
 ```js
@@ -123,8 +119,8 @@ window.pell
 
 ```js
 // Initialize pell on an HTMLElement
-pell.init({
-  // <HTMLElement>, required
+new Pell({
+    // <HTMLElement>, required
   element: document.getElementById('some-id'),
 
   // <Function>, required
@@ -201,10 +197,10 @@ pell.exec(command<string>, value<string>)
 ```
 
 ```js
-import { exec, init } from 'pell'
+import {Pell} from 'pell'
 
-const editor = init({
-  element: document.getElementById('editor'),
+const editor = new Pell({
+    element: document.getElementById('editor'),
   onChange: html => {
     document.getElementById('html-output').textContent = html
   },
@@ -262,13 +258,13 @@ editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
 ```
 
 ```js
-import { init } from 'pell'
+import {Pell} from 'pell'
 import Turndown from 'turndown'
 
-const { turndown } = new Turndown({ headingStyle: 'atx' })
+const {turndown} = new Turndown({headingStyle: 'atx'})
 
-init({
-  element: document.getElementById('editor'),
+new Pell({
+    element: document.getElementById('editor'),
   actions: ['bold', 'italic', 'heading1', 'heading2', 'olist', 'ulist'],
   onChange: html => {
     document.getElementById('markdown-output').innerHTML = turndown(html)
