@@ -124,7 +124,7 @@ export class Pell {
         }
         settings.element.appendChild(content);
 
-        defaultActions.forEach(action => {
+        for (const action of defaultActions) {
             const button = document.createElement('button')
             button.className = classes.button
             button.innerHTML = action.icon
@@ -140,7 +140,7 @@ export class Pell {
             }
 
             actionbar.appendChild(button);
-        })
+        }
 
         if (settings.styleWithCSS) exec('styleWithCSS')
         exec(defaultParagraphSeparatorString, defaultParagraphSeparator)
