@@ -3,89 +3,6 @@ const formatBlock = 'formatBlock'
 
 export const exec = (command, value = null) => document.execCommand(command, false, value)
 
-const defaultActions = {
-  bold: {
-    icon: '<b>B</b>',
-    title: 'Bold',
-    state: () => document.queryCommandState('bold'),
-    result: () => exec('bold')
-  },
-  italic: {
-    icon: '<i>I</i>',
-    title: 'Italic',
-    state: () => document.queryCommandState('italic'),
-    result: () => exec('italic')
-  },
-  underline: {
-    icon: '<u>U</u>',
-    title: 'Underline',
-    state: () => document.queryCommandState('underline'),
-    result: () => exec('underline')
-  },
-  strikethrough: {
-    icon: '<strike>S</strike>',
-    title: 'Strike-through',
-    state: () => document.queryCommandState('strikeThrough'),
-    result: () => exec('strikeThrough')
-  },
-  heading1: {
-    icon: '<b>H<sub>1</sub></b>',
-    title: 'Heading 1',
-    result: () => exec(formatBlock, '<h1>')
-  },
-  heading2: {
-    icon: '<b>H<sub>2</sub></b>',
-    title: 'Heading 2',
-    result: () => exec(formatBlock, '<h2>')
-  },
-  paragraph: {
-    icon: '&#182;',
-    title: 'Paragraph',
-    result: () => exec(formatBlock, '<p>')
-  },
-  quote: {
-    icon: '&#8220; &#8221;',
-    title: 'Quote',
-    result: () => exec(formatBlock, '<blockquote>')
-  },
-  olist: {
-    icon: '&#35;',
-    title: 'Ordered List',
-    result: () => exec('insertOrderedList')
-  },
-  ulist: {
-    icon: '&#8226;',
-    title: 'Unordered List',
-    result: () => exec('insertUnorderedList')
-  },
-  code: {
-    icon: '&lt;/&gt;',
-    title: 'Code',
-    result: () => exec(formatBlock, '<pre>')
-  },
-  line: {
-    icon: '&#8213;',
-    title: 'Horizontal Line',
-    result: () => exec('insertHorizontalRule')
-  },
-  link: {
-    icon: '&#128279;',
-    title: 'Link',
-    result: () => {
-      const url = window.prompt('Enter the link URL')
-      if (url) exec('createLink', url)
-    }
-  },
-  image: {
-    icon: '&#128247;',
-    title: 'Image',
-    result: () => {
-      const url = window.prompt('Enter the image URL')
-      if (url) exec('insertImage', url)
-    }
-  }
-}
-
 const defaultClasses = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
@@ -94,16 +11,89 @@ const defaultClasses = {
 }
 
 export class Pell {
+
+  #defaultActions = [{
+    icon: '<b>B</b>',
+    title: 'Bold',
+    state: () => document.queryCommandState('bold'),
+    result: () => exec('bold')
+  },
+    {
+      icon: '<i>I</i>',
+      title: 'Italic',
+      state: () => document.queryCommandState('italic'),
+      result: () => exec('italic')
+    },
+    {
+      icon: '<u>U</u>',
+      title: 'Underline',
+      state: () => document.queryCommandState('underline'),
+      result: () => exec('underline')
+    },
+    {
+      icon: '<strike>S</strike>',
+      title: 'Strike-through',
+      state: () => document.queryCommandState('strikeThrough'),
+      result: () => exec('strikeThrough')
+    },
+    {
+      icon: '<b>H<sub>1</sub></b>',
+      title: 'Heading 1',
+      result: () => exec(formatBlock, '<h1>')
+    },
+    {
+      icon: '<b>H<sub>2</sub></b>',
+      title: 'Heading 2',
+      result: () => exec(formatBlock, '<h2>')
+    },
+    {
+      icon: '&#182;',
+      title: 'Paragraph',
+      result: () => exec(formatBlock, '<p>')
+    },
+    {
+      icon: '&#8220; &#8221;',
+      title: 'Quote',
+      result: () => exec(formatBlock, '<blockquote>')
+    },
+    {
+      icon: '&#35;',
+      title: 'Ordered List',
+      result: () => exec('insertOrderedList')
+    },
+    {
+      icon: '&#8226;',
+      title: 'Unordered List',
+      result: () => exec('insertUnorderedList')
+    },
+    {
+      icon: '&lt;/&gt;',
+      title: 'Code',
+      result: () => exec(formatBlock, '<pre>')
+    },
+    {
+      icon: '&#8213;',
+      title: 'Horizontal Line',
+      result: () => exec('insertHorizontalRule')
+    },
+    {
+      icon: '&#128279;',
+      title: 'Link',
+      result: () => {
+        const url = window.prompt('Enter the link URL')
+        if (url) exec('createLink', url)
+      }
+    },
+    {
+      icon: '&#128247;',
+      title: 'Image',
+      result: () => {
+        const url = window.prompt('Enter the image URL')
+        if (url) exec('insertImage', url)
+      }
+    }]
+
   constructor(settings) {
-    const actions = settings.actions
-        ? (
-            settings.actions.map(action => {
-              if (typeof action === 'string') return defaultActions[action]
-              else if (defaultActions[action.name]) return {...defaultActions[action.name], ...action}
-              return action
-            })
-        )
-        : Object.keys(defaultActions).map(action => defaultActions[action])
 
     // @type {string: actionbar, string: button, string: content,
     // string: selected} The custom class for the elements in the Editor.
@@ -132,7 +122,7 @@ export class Pell {
     }
     settings.element.appendChild(content);
 
-    actions.forEach(action => {
+    this.#defaultActions.forEach(action => {
       const button = document.createElement('button')
       button.className = classes.button
       button.innerHTML = action.icon
