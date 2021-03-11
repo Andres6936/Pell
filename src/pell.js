@@ -93,66 +93,64 @@ const defaultClasses = {
   selected: 'pell-button-selected'
 }
 
-export const init = settings => {
-  const actions = settings.actions
-      ? (
-          settings.actions.map(action => {
-            if (typeof action === 'string') return defaultActions[action]
-            else if (defaultActions[action.name]) return {...defaultActions[action.name], ...action}
-            return action
-          })
-      )
-      : Object.keys(defaultActions).map(action => defaultActions[action])
+export class Pell {
+  constructor(settings) {
+    const actions = settings.actions
+        ? (
+            settings.actions.map(action => {
+              if (typeof action === 'string') return defaultActions[action]
+              else if (defaultActions[action.name]) return {...defaultActions[action.name], ...action}
+              return action
+            })
+        )
+        : Object.keys(defaultActions).map(action => defaultActions[action])
 
-  // @type {string: actionbar, string: button, string: content,
-  // string: selected} The custom class for the elements in the Editor.
-  const classes = {...defaultClasses, ...settings.classes}
+    // @type {string: actionbar, string: button, string: content,
+    // string: selected} The custom class for the elements in the Editor.
+    const classes = {...defaultClasses, ...settings.classes}
 
-  // @type {string} The default paragraph separator, can be 'p' or 'div'.
-  const defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div'
+    // @type {string} The default paragraph separator, can be 'p' or 'div'.
+    const defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div'
 
-  // @type {HTMLDivElement} The action bar element
-  const actionbar = document.createElement('div')
-  actionbar.className = classes.actionbar
-  settings.element.appendChild(actionbar);
+    // @type {HTMLDivElement} The action bar element
+    const actionbar = document.createElement('div')
+    actionbar.className = classes.actionbar
+    settings.element.appendChild(actionbar);
 
-  const content = settings.element.content = document.createElement('div')
-  content.contentEditable = true
-  content.className = classes.content
-  content.oninput = ({target: {firstChild}}) => {
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
-    else if (content.innerHTML === '<br>') content.innerHTML = ''
-    settings.onChange(content.innerHTML)
-  }
-  content.onkeydown = event => {
-    if (event.key === 'Enter' && document.queryCommandValue(formatBlock) === 'blockquote') {
-      setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
+    const content = settings.element.content = document.createElement('div')
+    content.contentEditable = true
+    content.className = classes.content
+    content.oninput = ({target: {firstChild}}) => {
+      if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
+      else if (content.innerHTML === '<br>') content.innerHTML = ''
+      settings.onChange(content.innerHTML)
     }
-  }
-  settings.element.appendChild(content);
-
-  actions.forEach(action => {
-    const button = document.createElement('button')
-    button.className = classes.button
-    button.innerHTML = action.icon
-    button.title = action.title
-    button.setAttribute('type', 'button')
-    button.onclick = () => action.result() && content.focus()
-
-    if (action.state) {
-      const handler = () => button.classList[action.state() ? 'add' : 'remove'](classes.selected)
-      content.addEventListener('keyup', handler);
-      content.addEventListener('mouseup', handler);
-      button.addEventListener('click', handler);
+    content.onkeydown = event => {
+      if (event.key === 'Enter' && document.queryCommandValue(formatBlock) === 'blockquote') {
+        setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
+      }
     }
+    settings.element.appendChild(content);
 
-    actionbar.appendChild(button);
-  })
+    actions.forEach(action => {
+      const button = document.createElement('button')
+      button.className = classes.button
+      button.innerHTML = action.icon
+      button.title = action.title
+      button.setAttribute('type', 'button')
+      button.onclick = () => action.result() && content.focus()
 
-  if (settings.styleWithCSS) exec('styleWithCSS')
-  exec(defaultParagraphSeparatorString, defaultParagraphSeparator)
+      if (action.state) {
+        const handler = () => button.classList[action.state() ? 'add' : 'remove'](classes.selected)
+        content.addEventListener('keyup', handler);
+        content.addEventListener('mouseup', handler);
+        button.addEventListener('click', handler);
+      }
 
-  return settings.element
+      actionbar.appendChild(button);
+    })
+
+    if (settings.styleWithCSS) exec('styleWithCSS')
+    exec(defaultParagraphSeparatorString, defaultParagraphSeparator)
+  }
 }
-
-export default { exec, init }

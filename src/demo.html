@@ -44,9 +44,9 @@
 
 <script type="module">
 
-  import {init} from './pell.js'
+  import {Pell} from './pell.js'
 
-  var editor = init({
+  new Pell({
     element: document.getElementById('editor'),
     defaultParagraphSeparator: 'p',
     onChange: function (html) {
