@@ -1,3 +1,12 @@
+// When an HTML element has contenteditable set to true, the
+// document.execCommand() method is made available. This lets you run commands
+// to manipulate the contents of the editable region. Most commands affect the
+// document's selection by, for example, applying a style to the text (bold,
+// italics, etc), while others insert new elements (like adding a link) or
+// affect an entire line (indenting). When using contentEditable, calling
+// execCommand() will affect the currently active editable element.
+
+
 const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
 const formatBlock = 'formatBlock'
 
