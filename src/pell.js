@@ -109,9 +109,12 @@ export class Pell {
         actionbar.className = classes.actionbar
         settings.element.appendChild(actionbar);
 
-        const content = settings.element.content = document.createElement('div')
-        content.contentEditable = true
-        content.className = classes.content
+        const content = document.createElement('div');
+        // The contenteditable global attribute is an enumerated attribute
+        // indicating if the element should be editable by the user. If so,
+        // the browser modifies its widget to allow editing.
+        content.setAttribute('contenteditable', 'true');
+        content.classList.add(classes.content);
         content.oninput = ({target: {firstChild}}) => {
             if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
             else if (content.innerHTML === '<br>') content.innerHTML = ''
