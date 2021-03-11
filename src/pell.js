@@ -116,7 +116,6 @@ export class Pell {
         // @type {HTMLDivElement} The action bar element
         const actionbar = document.createElement('div')
         actionbar.className = classes.actionbar
-        settings.element.appendChild(actionbar);
 
         const content = document.createElement('div');
         // The contenteditable global attribute is an enumerated attribute
@@ -134,6 +133,8 @@ export class Pell {
                 setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
             }
         }
+
+        settings.element.appendChild(actionbar);
         settings.element.appendChild(content);
 
         for (const action of defaultActions) {
