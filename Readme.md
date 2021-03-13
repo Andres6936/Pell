@@ -271,8 +271,8 @@ new Pell({
 
 #### Frameworks
 
-- [React](/examples/react.md)
-- [Vue](/examples/vue.md)
+- [React](/docs/examples/react.md)
+- [Vue](/docs/examples/vue.md)
 
 ## Custom Styles
 
