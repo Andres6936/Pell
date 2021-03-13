@@ -1,7 +1,4 @@
-<img src="./images/logo.png" width="128" alt="Logo">
-
-[![npm](https://img.shields.io/npm/v/pell.svg)](https://www.npmjs.com/package/pell)
-[![cdnjs](https://img.shields.io/cdnjs/v/pell.svg)](https://cdnjs.com/libraries/pell)
+<img src="img/logo.png" width="128" alt="Logo">
 
 > pell is the simplest and smallest WYSIWYG text editor for web, with no dependencies
 
@@ -306,4 +303,6 @@ MIT
 
 BrowserStack for cross browser testing:
 
-<a href="https://www.browserstack.com" target="_blank" rel="noopener noreferrer"><img width="128" src="./images/browserstack.png" alt="BrowserStack logo"></a>
+<a href="https://www.browserstack.com" target="_blank" rel="noopener noreferrer">
+    <img width="128" src="./img/browserstack.png" alt="BrowserStack logo">
+</a>
